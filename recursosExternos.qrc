@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="iconos">
+    <file>recursos/ajustes.png</file>
+    <file>recursos/icons8-acerca-de-100.png</file>
+    <file>recursos/refrescar.png</file>
+  </qresource>
+</RCC>
