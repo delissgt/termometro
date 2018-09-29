@@ -8,12 +8,14 @@ import uitermometro #arch interface creado con QTDesigner
 import serial, time #se necesita para usar arduino
 import re #expresion regular
 import pyqtgraph as pg #para la grafica pintar
-from PyQt4.QtMultimedia import (QAudioDeviceInfo, QAudioOutput)
+#from PyQt4.QtMultimedia import (QAudioDeviceInfo, QAudioOutput) para que hicera pip sonido ...
+import dialogInformacion
 
 class MainWindow(QMainWindow, uitermometro.Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        self.setupUi(self) #para jalar todos los componentes de la interfaz
+        self.setupUi(self)
+        #para jalar todos los componentes de la interfaz
         #con la linea de arriba se puede ver que jala los componentes, y que to-do salio bien
 
         miLabel = QLabel("Dispositivos: ")
@@ -21,11 +23,14 @@ class MainWindow(QMainWindow, uitermometro.Ui_MainWindow):
         self.toolBar.addWidget(miLabel)
         self.toolBar.addWidget(self.miComboBox)
 
-        self.actionRefresh.triggered.connect(self.funcionRefrescar)#TODO trabajando
+        #TODO botonces up
+        self.actionInformacion.triggered.connect(self.funcionInformacion)
+
+        self.actionRefresh.triggered.connect(self.funcionRefrescar)
 
         self.pushButton_Iniciar.clicked.connect(self.funcionStart)
 
-        #linea para poder mostrar que dispositivos estan conectados TODO
+        #linea para poder mostrar que dispositivos estan conectados
         dispositivos = serial.tools.list_ports.comports()
 
         #crear grafica y sus propiedades
@@ -145,6 +150,13 @@ class MainWindow(QMainWindow, uitermometro.Ui_MainWindow):
         for usb in dispositivos:
             print (usb.device)
             self.miComboBox.addItem(usb.device) #agrega un elemento al ComboBox
+
+
+    def funcionInformacion(self):
+        ventaInfo = dialogInformacion.ClassInformacion(self)
+        ventaInfo.show()
+
+
 
 
 
