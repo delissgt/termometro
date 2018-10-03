@@ -10,21 +10,30 @@ import re #expresion regular
 import pyqtgraph as pg #para la grafica pintar
 #from PyQt4.QtMultimedia import (QAudioDeviceInfo, QAudioOutput) para que hicera pip sonido ...
 import dialogInformacion
+import dialogConfiguracion
 
 class MainWindow(QMainWindow, uitermometro.Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         #para jalar todos los componentes de la interfaz
-        #con la linea de arriba se puede ver que jala los componentes, y que to-do salio bien
+        #con la linea de arriba se puede ver que jala los componentes, y que to-do salio
+
+        #diccionario para cambiar los valores
+        # DICCIONARIO CON LAS preferencias
+        #nombre Diccionario = tipo Diccionario ( llaves=valor, llave=valor  )
+        self.configuraciones = dict(color="black", grosor=2, opacidad=0.5, ejeX=True, ejeY=True)
+
+
 
         miLabel = QLabel("Dispositivos: ")
         self.miComboBox = QComboBox(self)
         self.toolBar.addWidget(miLabel)
         self.toolBar.addWidget(self.miComboBox)
 
-        #TODO botonces up
+        #botones de la barra superior
         self.actionInformacion.triggered.connect(self.funcionInformacion)
+        self.actionAjustes.triggered.connect(self.funcionConfiguracion)
 
         self.actionRefresh.triggered.connect(self.funcionRefrescar)
 
@@ -155,6 +164,27 @@ class MainWindow(QMainWindow, uitermometro.Ui_MainWindow):
     def funcionInformacion(self):
         ventaInfo = dialogInformacion.ClassInformacion(self)
         ventaInfo.show()
+
+    def funcionConfiguracion(self):
+        # parametros callback, DICCIONARIO, padre
+        ventaConf = dialogConfiguracion.ClassConfiguracion(self.refrescar, self.configuraciones, self)
+        ventaConf.show()
+        ventaConf.raise_()
+        ventaConf.activateWindow()
+
+
+    #callback
+    def refrescar(self):
+        self.graphicsView.plotItem.showGrid(self.configuraciones["ejeX"],
+                                            self.configuraciones["ejeY"],
+                                            self.configuraciones["opacidad"])
+
+        self.pluma = pg.mkPen(width=self.configuraciones.get("grosor"))
+        formato_texto = 'color:{0}; font 36pt "Noto Sams";'.format(self.configuraciones.get("color"))
+        self.label_temperatura.setStyleSheet("QLabel {{{0}}}".format(formato_texto))
+
+
+
 
 
 
