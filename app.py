@@ -12,6 +12,10 @@ import pyqtgraph as pg #para la grafica pintar
 import dialogInformacion
 import dialogConfiguracion
 
+#variables globales
+versionPrograma = "0.2"
+
+
 class MainWindow(QMainWindow, uitermometro.Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -23,8 +27,6 @@ class MainWindow(QMainWindow, uitermometro.Ui_MainWindow):
         # DICCIONARIO CON LAS preferencias
         #nombre Diccionario = tipo Diccionario ( llaves=valor, llave=valor  )
         self.configuraciones = dict(color="black", grosor=2, opacidad=0.5, ejeX=True, ejeY=True)
-
-
 
         miLabel = QLabel("Dispositivos: ")
         self.miComboBox = QComboBox(self)
@@ -161,8 +163,8 @@ class MainWindow(QMainWindow, uitermometro.Ui_MainWindow):
             self.miComboBox.addItem(usb.device) #agrega un elemento al ComboBox
 
 
-    def funcionInformacion(self):
-        ventaInfo = dialogInformacion.ClassInformacion(self)
+    def funcionInformacion(self):                      #(variable, padre)
+        ventaInfo = dialogInformacion.ClassInformacion(versionPrograma, self )
         ventaInfo.show()
 
     def funcionConfiguracion(self):
@@ -173,7 +175,7 @@ class MainWindow(QMainWindow, uitermometro.Ui_MainWindow):
         ventaConf.activateWindow()
 
 
-    #callback
+    #callback = def refrescar
     def refrescar(self):
         self.graphicsView.plotItem.showGrid(self.configuraciones["ejeX"],
                                             self.configuraciones["ejeY"],
@@ -182,11 +184,6 @@ class MainWindow(QMainWindow, uitermometro.Ui_MainWindow):
         self.pluma = pg.mkPen(width=self.configuraciones.get("grosor"))
         formato_texto = 'color:{0}; font 36pt "Noto Sams";'.format(self.configuraciones.get("color"))
         self.label_temperatura.setStyleSheet("QLabel {{{0}}}".format(formato_texto))
-
-
-
-
-
 
 
 
@@ -245,7 +242,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setOrganizationDomain("www.deliss.me")
     app.setOrganizationName("deliss")
-    app.setApplicationVersion("1")
+    app.setApplicationVersion(versionPrograma)
     app.setApplicationName("deliss_me")
     window = MainWindow()
     window.show()

@@ -1,4 +1,4 @@
-from PyQt4.QtGui import QDialog
+from PyQt4.QtGui import (QDialog, QDialogButtonBox)
 import DialogConfiguraciones
 
 class ClassConfiguracion(QDialog, DialogConfiguraciones.Ui_Dialog):
@@ -14,8 +14,13 @@ class ClassConfiguracion(QDialog, DialogConfiguraciones.Ui_Dialog):
         self.comboBox.currentIndexChanged.connect(self.funcionAplicarCambios)
         self.doubleSpinBox.valueChanged.connect(self.funcionAplicarCambios)
         self.doubleSpinBox_2.valueChanged.connect(self.funcionAplicarCambios)
-        self.checkBox_X.clicked.connect(self.funcionAplicarCambios)
+        self.checkBox_X.clicked.connect(self.funcionAplicarCambios)#senial que se activan usuaario solamente
         self.checkBox_Y.clicked.connect(self.funcionAplicarCambios)
+
+        # conexiones de botones restore y cancel
+        self.dialogButtonBox.button(QDialogButtonBox.RestoreDefaults).clicked.connect(self.funcionParametros)
+        self.dialogButtonBox.button(QDialogButtonBox.Cancel).clicked.connect(self.reject)
+
 
 
     def funcionAplicarCambios(self):
@@ -28,4 +33,14 @@ class ClassConfiguracion(QDialog, DialogConfiguraciones.Ui_Dialog):
         self.configuraciones["ejeX"] = self.checkBox_X.isChecked()
         self.configuraciones["ejeY"] = self.checkBox_Y.isChecked()
         #Manda a ejecutar la funcion en el MainWindow
-        self.callback()
+        self.callback() # = self.refrescar    del app.py
+
+
+    def funcionParametros(self):
+        self.comboBox.setCurrentIndex(self.comboBox.findText("black"))
+        self.doubleSpinBox.setValue(2)
+        self.doubleSpinBox_2.setValue(0.5)
+        self.checkBox_X.setChecked(True)
+        self.checkBox_Y.setChecked(True)
+        self.funcionAplicarCambios()
+
