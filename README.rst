@@ -15,3 +15,4 @@ Cosas por hacer
 - [] soporte para actualizaciones
 - [] idioma ingles
 - [] guardar las prefencias del usuario
+- [] hacer Makefile
