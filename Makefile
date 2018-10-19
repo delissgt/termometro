@@ -3,7 +3,7 @@
 default: install
 
 install:
-    pipenv install --skip-lock
+	pipenv install --skip-lock
 
 developer:
-    pipenv install --dev --skip-lock
+	pipenv install --dev --skip-lock
